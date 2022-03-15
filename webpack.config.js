@@ -9,6 +9,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 console.log('process.env.NODE_ENV=', process.env.NODE_ENV) // 打印环境变量
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 
+//路径处理方法
+function resolve(dir) {
+    return path.join(__dirname, dir)
+}
+
 const config = {
     entry: "./src/index.js", // 打包入口地址
     output: {
@@ -17,6 +22,7 @@ const config = {
     },
     //devtool: 'source-map',
     module: {
+        noParse: /jquery|lodash/, //不需要解析依赖的第三方大型类库
         rules: [ //转换规则
             {
                 test: /\.(s[ac]|c)ss$/i, //匹配所有的 sass/scss/css 文件
@@ -35,14 +41,20 @@ const config = {
             },
             {
                 test: /\.js$/i,
-                use:[{
-                    loader:"babel-loader",
-                    options:{
-                        presets:[
-                            "@babel/preset-env"
-                        ]
-                    }
-                }]
+                include: resolve('src'),
+                exclude: /node_modules/,
+                use: [{
+                        loader: 'thread-loader', // 开启多进程打包
+                        options: {
+                            worker: 3,
+                        }
+                    },{
+                        loader: 'babel-loader',
+                        options: {
+                            cacheDirectory: true, // 启用缓存
+                        }
+                    },
+                ]
             }
         ]
     },
@@ -60,6 +72,17 @@ const config = {
         compress: true, //是否启动压缩gzip
         port: 8080, //端口号
         open: true //是否自动打开浏览器
+    },
+    resolve: {
+        //解析模板扩展名
+        extensions: ['.ts', '...'],
+        //配置别名
+        alias: {
+            '~': resolve("src"),
+            '@': resolve('src'),
+            'components': resolve('src/components'),
+        },
+        modules: [resolve('src'), 'node_modules']
     }
 }
 

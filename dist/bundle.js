@@ -146,4 +146,3 @@ test.logger(); // class Author {
 }();
 /******/ })()
 ;
-//# sourceMappingURL=bundle.js.map
