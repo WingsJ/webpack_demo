@@ -8,7 +8,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 console.log('process.env.NODE_ENV=', process.env.NODE_ENV) // 打印环境变量
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
-const smp = new SpeedMeasurePlugin();
 
 const config = {
     entry: "./src/index.js", // 打包入口地址
@@ -27,10 +26,22 @@ const config = {
                 use: [{
                         loader: 'file-loader',
                         options: {
-                            name: '[name][hash:8].[ext]'
+                            name: '[name][hash:8].[ext]',
+                            limit: 50 * 1024
                         }
                     } // 使用 file-loader
                 ]
+            },
+            {
+                test: /\.js$/i,
+                use:[{
+                    loader:"babel-loader",
+                    options:{
+                        presets:[
+                            "@babel/preset-env"
+                        ]
+                    }
+                }]
             }
         ]
     },
@@ -54,5 +65,5 @@ const config = {
 module.exports = (env, argv) => {
     console.log('argv.mode=', argv.mode) // 打印 mode(模式) 值
     // 这里可以通过不同的模式修改 config 配置
-    return smp.wrap(config);
+    return config
 }

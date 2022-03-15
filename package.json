@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test webpack --mode production",
     "dev": "cross-env NODE_ENV=dev webpack serve --mode development",
-    "build": "cross-env NODE_ENV=prod webpack --mode development"
+    "build": "cross-env NODE_ENV=prod webpack --mode none"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/WingsJ/webpack_demo#readme",
   "devDependencies": {
-    "@babel/core": "^7.17.5",
+    "@babel/core": "^7.17.7",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-decorators": "^7.17.2",
     "@babel/preset-env": "^7.16.11",
