@@ -15,6 +15,7 @@ const config = {
         filename: "bundle.js", // 输出文件名
         path: path.join(__dirname, 'dist') // 输出文件目录
     },
+    //devtool: 'source-map',
     module: {
         rules: [ //转换规则
             {
